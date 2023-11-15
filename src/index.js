@@ -1,8 +1,10 @@
-import Model from "./model.js";
+import Model from "./model.js";                 //模型类
 import showMessage from "./message.js";
 import randomSelection from "./utils.js";
 import tools from "./tools.js";
 
+console.log('index.js被加载')
+//加载部件
 function loadWidget(config) {
     const model = new Model(config);
     localStorage.removeItem("waifu-display");
