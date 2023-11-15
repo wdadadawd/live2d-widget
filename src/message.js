@@ -1,7 +1,8 @@
-import randomSelection from "./utils.js";
+import randomSelection from "./utils.js";         //随机工具类
 
 let messageTimer;
 
+//展示消息(内容、展示时间、)
 function showMessage(text, timeout, priority) {
     if (!text || (sessionStorage.getItem("waifu-text") && sessionStorage.getItem("waifu-text") > priority)) return;
     if (messageTimer) {

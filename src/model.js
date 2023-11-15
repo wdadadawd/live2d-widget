@@ -1,6 +1,7 @@
-import showMessage from "./message.js";
-import randomSelection from "./utils.js";
+import showMessage from "./message.js";            //
+import randomSelection from "./utils.js";          //随机工具类
 
+//模型类
 class Model {
     constructor(config) {
         let { apiPath, cdnPath } = config;

@@ -3,7 +3,7 @@ import showMessage from "./message.js";
 import randomSelection from "./utils.js";
 import tools from "./tools.js";
 
-console.log('index.js被加载')
+// console.log('index.js被加载')
 //加载部件
 function loadWidget(config) {
     const model = new Model(config);
