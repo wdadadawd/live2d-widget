@@ -26,6 +26,7 @@ class Model {
         const response = await fetch(`${this.cdnPath}model_list.json`);
         this.modelList = await response.json();
         console.log(this.modelList.models);     //打印模型列表
+        console.log('测试')
         console.log('打印模型列表')
     }
 
@@ -60,6 +61,7 @@ class Model {
                 var nowTarget = localStorage.getItem("modelTarget");
                 modelArray = modelArray.filter(item => item !== nowTarget);
             }
+            console.log(modelArray)
             const target = randomSelection(modelArray);
             console.log(target)              //打印模型信息
             loadlive2d("live2d", `${this.cdnPath}model/${target}/index.json`);
