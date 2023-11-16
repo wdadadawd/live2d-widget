@@ -26,6 +26,7 @@ class Model {
         const response = await fetch(`${this.cdnPath}model_list.json`);
         this.modelList = await response.json();
         console.log(this.modelList.models);     //打印模型列表
+        console.log('打印模型列表')
     }
 
     //加载模型
