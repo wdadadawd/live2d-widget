@@ -8,7 +8,7 @@ function loadExternalResource(url, type) {
 		let tag;
 
 		if (type === "css") {
-			tag = document.createElement("link");
+			tag = document.createElement("link");       
 			tag.rel = "stylesheet";
 			tag.href = url;
 		}

@@ -6,27 +6,31 @@ import fa_camera_retro from "@fortawesome/fontawesome-free/svgs/solid/camera-ret
 import fa_info_circle from "@fortawesome/fontawesome-free/svgs/solid/circle-info.svg";
 import fa_xmark from "@fortawesome/fontawesome-free/svgs/solid/xmark.svg";
 
-import showMessage from "./message.js";
+import showMessage from "./message.js";     //发消息工具类
 
+//人物导航栏类
+
+//1.随机获取一条hitokoto.cn一言上的一句话
 function showHitokoto() {
     // 增加 hitokoto.cn 的 API
     fetch("https://v1.hitokoto.cn")
         .then(response => response.json())
         .then(result => {
-            const text = `这句一言来自 <span>「${result.from}」</span>，是 <span>${result.creator}</span> 在 hitokoto.cn 投稿的。`;
+            // const text = `这句一言来自 <span>「${result.from}」</span>，是 <span>${result.creator}</span> 在 hitokoto.cn 投稿的。`;
             showMessage(result.hitokoto, 6000, 9);
-            setTimeout(() => {
-                showMessage(text, 4000, 9);
-            }, 6000);
+            // setTimeout(() => {
+            //     showMessage(text, 4000, 9);
+            // }, 6000);
         });
 }
 
+//tools类
 const tools = {
-    "hitokoto": {
+    "hitokoto": {                    //一言
         icon: fa_comment,
         callback: showHitokoto
     },
-    "asteroids": {
+    "asteroids": {                  //小游戏
         icon: fa_paper_plane,
         callback: () => {
             if (window.Asteroids) {
@@ -39,15 +43,15 @@ const tools = {
             }
         }
     },
-    "switch-model": {
+    "switch-model": {                //切换模型
         icon: fa_user_circle,
         callback: () => {}
     },
-    "switch-texture": {
+    "switch-texture": {             //切换装扮
         icon: fa_street_view,
         callback: () => {}
     },
-    "photo": {
+    "photo": {                     //拍照
         icon: fa_camera_retro,
         callback: () => {
             showMessage("照好了嘛，是不是很可爱呢？", 6000, 9);
@@ -55,21 +59,24 @@ const tools = {
             Live2D.captureFrame = true;
         }
     },
-    "info": {
+    "info": {                     //个性信息
         icon: fa_info_circle,
         callback: () => {
             open("https://github.com/stevenjoezhang/live2d-widget");
         }
     },
-    "quit": {
+    "quit": {                    //收起
         icon: fa_xmark,
         callback: () => {
+            //设置收起时间
             localStorage.setItem("waifu-display", Date.now());
-            showMessage("愿你有一天能与重要的人重逢。", 2000, 11);
+            showMessage("我先藏起来啦。", 2000, 11);
             document.getElementById("waifu").style.bottom = "-500px";
+            //隐藏人物和工具栏
             setTimeout(() => {
-                document.getElementById("waifu").style.display = "none";
-                document.getElementById("waifu-toggle").classList.add("waifu-toggle-active");
+                document.getElementById("waifu").style.display = "none";      //隐藏人物模型
+                //显示用于显示人物的工具栏
+                document.getElementById("waifu-toggle").classList.add("waifu-toggle-active"); 
             }, 3000);
         }
     }

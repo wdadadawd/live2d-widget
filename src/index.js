@@ -1,30 +1,36 @@
 import Model from "./model.js";                 //模型类
-import showMessage from "./message.js";
-import randomSelection from "./utils.js";
-import tools from "./tools.js";
+import showMessage from "./message.js";         //发送消息类
+import randomSelection from "./utils.js";       //筛选工具类
+import tools from "./tools.js";             
 
 // console.log('index.js被加载')
 //加载部件
 function loadWidget(config) {
+    //创建模型类
     const model = new Model(config);
-    localStorage.removeItem("waifu-display");
-    sessionStorage.removeItem("waifu-text");
+    localStorage.removeItem("waifu-display");      //清除人物不显示信息
+    sessionStorage.removeItem("waifu-text");       //清除消息优先级信息
+    //添加人物模型waifu、工具栏waifu-tool、消息框waifu-tips
     document.body.insertAdjacentHTML("beforeend", `<div id="waifu">
             <div id="waifu-tips"></div>
             <canvas id="live2d" width="800" height="800"></canvas>
             <div id="waifu-tool"></div>
         </div>`);
     // https://stackoverflow.com/questions/24148403/trigger-css-transition-on-appended-element
-    setTimeout(() => {
+    setTimeout(() => {       //设置初始人物位置
         document.getElementById("waifu").style.bottom = 0;
     }, 0);
 
+    //1.立即执行函数注册工具栏
     (function registerTools() {
-        tools["switch-model"].callback = () => model.loadOtherModel();
-        tools["switch-texture"].callback = () => model.loadRandModel();
+        //设置换装和换人物工具的回调函数
+        tools["switch-model"].callback = () => model.loadOtherModel();     //换模型
+        tools["switch-texture"].callback = () => model.loadRandModel();   //换装
+        //把工具类转换为数组
         if (!Array.isArray(config.tools)) {
             config.tools = Object.keys(tools);
         }
+        //设置工具的回调函数和图标
         for (let tool of config.tools) {
             if (tools[tool]) {
                 const { icon, callback } = tools[tool];
@@ -34,6 +40,7 @@ function loadWidget(config) {
         }
     })();
 
+    //2.获取欢迎语句
     function welcomeMessage(time) {
         if (location.pathname === "/") { // 如果是主页
             for (let { hour, text } of time) {
@@ -64,21 +71,23 @@ function loadWidget(config) {
         return text;
     }
 
+    //3.注册用户监听
     function registerEventListener(result) {
         // 检测用户活动状态，并在空闲时显示消息
         let userAction = false,
             userActionTimer,
-            messageArray = result.message.default,
+            messageArray = result.message.default,         //随机获取消息
             lastHoverElement;
         window.addEventListener("mousemove", () => userAction = true);
         window.addEventListener("keydown", () => userAction = true);
+        //设置每秒检测用户状态
         setInterval(() => {
-            if (userAction) {
+            if (userAction) {     //用户在活动清除定时器
                 userAction = false;
                 clearInterval(userActionTimer);
                 userActionTimer = null;
-            } else if (!userActionTimer) {
-                userActionTimer = setInterval(() => {
+            } else if (!userActionTimer) { 
+                userActionTimer = setInterval(() => {     //用户不在活动激活定时器
                     showMessage(messageArray, 6000, 9);
                 }, 20000);
             }
@@ -128,7 +137,9 @@ function loadWidget(config) {
         });
     }
 
+    //执行加载模型
     (function initModel() {
+        //获取本地模型信息
         let modelId = localStorage.getItem("modelId"),
             modelTexturesId = localStorage.getItem("modelTexturesId");
         if (modelId === null) {
@@ -136,13 +147,15 @@ function loadWidget(config) {
             modelId = 1; // 模型 ID
             modelTexturesId = 53; // 材质 ID
         }
+        //加载模型
         model.loadModel(modelId, modelTexturesId);
         fetch(config.waifuPath)
             .then(response => response.json())
-            .then(registerEventListener);
+            .then(registerEventListener);               //创建监听
     })();
 }
 
+//加载组件
 function initWidget(config, apiPath) {
     if (typeof config === "string") {
         config = {
@@ -150,16 +163,17 @@ function initWidget(config, apiPath) {
             apiPath
         };
     }
+    //添加用于显示人物的工具栏标签并添加单击事件响应
     document.body.insertAdjacentHTML("beforeend", `<div id="waifu-toggle">
-            <span>看板娘</span>
+            <span>税海学堂</span>
         </div>`);
     const toggle = document.getElementById("waifu-toggle");
-    toggle.addEventListener("click", () => {
+    toggle.addEventListener("click", () => {           //添加事件响应
         toggle.classList.remove("waifu-toggle-active");
-        if (toggle.getAttribute("first-time")) {
+        if (toggle.getAttribute("first-time")) {            //是否未为加载，重新加载
             loadWidget(config);
             toggle.removeAttribute("first-time");
-        } else {
+        } else {                                            //加载了但被隐藏了，直接显示
             localStorage.removeItem("waifu-display");
             document.getElementById("waifu").style.display = "";
             setTimeout(() => {
@@ -167,12 +181,14 @@ function initWidget(config, apiPath) {
             }, 0);
         }
     });
+    //判断助手是否被隐藏了，判断人物的上一次关闭是否小于1天时间，否则直接重新加载
     if (localStorage.getItem("waifu-display") && Date.now() - localStorage.getItem("waifu-display") <= 86400000) {
-        toggle.setAttribute("first-time", true);
+        toggle.setAttribute("first-time", true);       //标记为未加载
         setTimeout(() => {
-            toggle.classList.add("waifu-toggle-active");
+            toggle.classList.add("waifu-toggle-active");    //显示用于显示人物的工具栏
         }, 0);
     } else {
+        //使用配置加载组件
         loadWidget(config);
     }
 }
