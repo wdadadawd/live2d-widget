@@ -19,13 +19,13 @@ class Model {
         this.useCDN = useCDN;
         this.apiPath = apiPath;
         this.cdnPath = cdnPath;
+        console.log('123')
     }
 
     //获取模型集合
     async loadModelList() {
         const response = await fetch(`${this.cdnPath}model_list.json`);
         this.modelList = await response.json();
-        console.log(this.modelList.models)
     }
 
     //加载模型
