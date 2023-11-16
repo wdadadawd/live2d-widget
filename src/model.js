@@ -19,13 +19,13 @@ class Model {
         this.useCDN = useCDN;
         this.apiPath = apiPath;
         this.cdnPath = cdnPath;
-        console.log('123')
     }
 
     //获取模型集合
     async loadModelList() {
         const response = await fetch(`${this.cdnPath}model_list.json`);
         this.modelList = await response.json();
+        console.log(this.modelList.models);     //打印模型列表
     }
 
     //加载模型
@@ -38,6 +38,7 @@ class Model {
             //随机获取一个模型id信息
             const target = randomSelection(this.modelList.models[modelId]);
             console.log(target)              //打印模型信息
+            localStorage.setItem("modelTarget",target);
             loadlive2d("live2d", `${this.cdnPath}model/${target}/index.json`);
         } else {
             loadlive2d("live2d", `${this.apiPath}get/?id=${modelId}-${modelTexturesId}`);
@@ -52,7 +53,13 @@ class Model {
         if (this.useCDN) {
             //如果模型列表未获取值则获取模型
             if (!this.modelList) await this.loadModelList();
-            const target = randomSelection(this.modelList.models[modelId]);
+            //不止一条衣服(去掉当前衣服)
+            let modelArray = this.modelList.models[modelId];
+            if(modelArray.length > 1){
+                var nowTarget = localStorage.getItem("modelTarget");
+                modelArray = modelArray.filter(item => item !== nowTarget);
+            }
+            const target = randomSelection(modelArray);
             console.log(target)              //打印模型信息
             loadlive2d("live2d", `${this.cdnPath}model/${target}/index.json`);
             showMessage("我的新衣服好看嘛？", 4000, 10);
