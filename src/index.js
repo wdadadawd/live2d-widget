@@ -148,14 +148,9 @@ function loadWidget(config) {
             modelId = 0; // 模型 ID 
             modelTexturesId = 53; // 材质 ID
         }
-        console.log('123')
-        if (modelTargetId === null){
-            console.log('123')
+        if (modelTargetId === null || modelTargetId === 'null'){
             modelTargetId = 0;     //指定第一个皮肤
         }
-        console.log(modelTargetId)
-        console.log(modelTargetId === null)
-        console.log(modelTargetId === 'null')
         //加载模型
         model.loadModel(modelId,modelTargetId,modelTexturesId);
         fetch(config.waifuPath)
