@@ -124,7 +124,7 @@ function loadWidget(config) {
             }
         });
 
-        // const devtools = () => { };
+        const devtools = () => { };
         // console.log("%c", devtools);
         //控制台监听器
         devtools.toString = () => {
