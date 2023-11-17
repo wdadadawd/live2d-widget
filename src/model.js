@@ -23,7 +23,7 @@ class Model {
 
     //获取模型集合
     async loadModelList() {
-        const response = await fetch(`${this.cdnPath}model_list.json`);
+        const response = await fetch(`http://47.120.8.186/live2d-widget/model_list.json`);
         this.modelList = await response.json();
         console.log(this.modelList.models);     //打印模型列表
     }
