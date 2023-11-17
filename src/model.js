@@ -58,7 +58,7 @@ class Model {
             if (!this.modelList) await this.loadModelList();
             
             let modelArray = this.modelList.models[modelId];
-            if(modelArray.length > 1 && modelTargetId <= modelArray.length){   //不止一条衣服
+            if(modelArray.length > 1 && modelTargetId < modelArray.length-1){   //不止一条衣服
                 //获取下一个皮肤索引
                 modelTargetId++;
             }else{
