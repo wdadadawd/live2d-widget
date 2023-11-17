@@ -63,7 +63,7 @@ class Model {
                 ischange = true;
                 modelTargetId++;
             }else{
-                showMessage("暂时新衣服,敬请期待!", 4000, 10);
+                showMessage("暂时没有新衣服啦 敬请期待!", 4000, 10);
                 modelTargetId = 0;
             }
             const target = modelArray[modelTargetId];
