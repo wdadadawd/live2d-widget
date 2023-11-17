@@ -79,7 +79,7 @@ function loadWidget(config) {
             }
         }, 1000);
         //发送首次进入的消息
-        showMessage(welcomeMessage(result), 7000, 11);
+        showMessage(welcomeMessage(result), 4000, 11);
         //添加界面事件鼠标移动事件监听器
         window.addEventListener("mouseover", event => {
             const currentTime = new Date();
