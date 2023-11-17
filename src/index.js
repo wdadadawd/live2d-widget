@@ -62,7 +62,7 @@ function loadWidget(config) {
         let userAction = false,
             userActionTimer,
             messageArray = result.message.default,         //随机获取消息
-            lastHoverElement;
+            lastHoverElement,lastHoverTime;
         //监听用户鼠标移动和鼠标点击
         window.addEventListener("mousemove", () => userAction = true);
         window.addEventListener("keydown", () => userAction = true);
@@ -82,13 +82,15 @@ function loadWidget(config) {
         showMessage(welcomeMessage(result), 7000, 11);
         //添加界面事件鼠标移动事件监听器
         window.addEventListener("mouseover", event => {
+            const currentTime = new Date();
             //遍历事件包含的元素选择器
             for (let { selector, text } of result.mouseover) {
                 //判断发生的事件是否在目标选择器范围内
                 if (!event.target.closest(selector)) continue;
                 //判断事件发生对象是否与上一次的相同，相同则不重复产生提示
-                if (lastHoverElement === selector) return;
+                if (lastHoverElement === selector && (currentTime - lastHoverTime) < 2000 ) return;
                 lastHoverElement = selector;
+                lastHoverTime = currentTime;
                 text = randomSelection(text);
                 text = text.replace("{text}", event.target.innerText);
                 showMessage(text, 4000, 8);
@@ -99,12 +101,14 @@ function loadWidget(config) {
         window.addEventListener("click", event => {
             for (let { selector, text } of result.click) {
                 if (!event.target.closest(selector)) continue;
-                console.log(selector)
+                // console.log(selector)
                 //如果等于消息框,弹出聊天框
                 if(selector == '#waifu-tips'||selector == '#live2d'){
                     const chatWin = document.getElementById("chatWin")
                     if(chatWin)
                       chatWin.setAttribute("isshow",true);
+                    // if(chatWin&&chatWin.getAttribute("isshow") == "false")   只显示
+                    // chatWin.setAttribute("isshow",true);
                 }
                 text = randomSelection(text);
                 text = text.replace("{text}", event.target.innerText);
