@@ -78,6 +78,7 @@ function loadWidget(config) {
             userActionTimer,
             messageArray = result.message.default,         //随机获取消息
             lastHoverElement;
+        //监听用户鼠标移动和鼠标点击
         window.addEventListener("mousemove", () => userAction = true);
         window.addEventListener("keydown", () => userAction = true);
         //设置每秒检测用户状态
@@ -87,15 +88,19 @@ function loadWidget(config) {
                 clearInterval(userActionTimer);
                 userActionTimer = null;
             } else if (!userActionTimer) { 
-                userActionTimer = setInterval(() => {     //用户不在活动激活定时器
+                userActionTimer = setInterval(() => {     //用户不在活动激活定时器发送消息
                     showMessage(messageArray, 6000, 9);
                 }, 20000);
             }
         }, 1000);
         showMessage(welcomeMessage(result.time), 7000, 11);
+        //添加界面事件监听器
         window.addEventListener("mouseover", event => {
+            //遍历事件包含的元素选择器
             for (let { selector, text } of result.mouseover) {
+                //判断发生的事件是否在目标选择器范围内
                 if (!event.target.closest(selector)) continue;
+                //判断事件发生对象是否与上一次的相同，相同则不重复产生提示
                 if (lastHoverElement === selector) return;
                 lastHoverElement = selector;
                 text = randomSelection(text);
@@ -185,7 +190,7 @@ function initWidget(config, apiPath) {
             }, 0);
         }
     });
-    //判断助手是否被隐藏了，判断人物的上一次关闭是否小于1天时间，否则直接重新加载
+    //判断助手是否被隐藏了，如果人物的上一次隐藏是小于1天时间，则继续隐藏，否则直接重新加载
     if (localStorage.getItem("waifu-display") && Date.now() - localStorage.getItem("waifu-display") <= 86400000) {
         toggle.setAttribute("first-time", true);       //标记为未加载
         setTimeout(() => {
