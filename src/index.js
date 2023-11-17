@@ -141,7 +141,7 @@ function loadWidget(config) {
     (function initModel() {
         //获取本地模型信息
         let modelId = localStorage.getItem("modelId"),
-            modelTargetId = localStorage.getItem("modelTargetId")
+            modelTargetId = localStorage.getItem("modelTargetId"),
             modelTexturesId = localStorage.getItem("modelTexturesId");
         if (modelId === null) {
             // 首次访问加载 指定模型 的 指定材质
