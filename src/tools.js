@@ -77,7 +77,7 @@ const tools = {
                 document.getElementById("waifu").style.display = "none";      //隐藏人物模型
                 //显示用于显示人物的工具栏
                 document.getElementById("waifu-toggle").classList.add("waifu-toggle-active"); 
-            }, 3000);
+            }, 1000);
         }
     }
 };
