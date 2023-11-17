@@ -41,9 +41,9 @@ function loadWidget(config) {
     })();
 
     //2.获取欢迎语句
-    function welcomeMessage(time) {
+    function welcomeMessage(result) {
         if (location.pathname === "/") { // 如果是主页
-            for (let { hour, text } of time) {
+            for (let { hour, text } of result.time) {
                 const now = new Date(),
                     after = hour.split("-")[0],
                     before = hour.split("-")[1] || after;
@@ -52,23 +52,8 @@ function loadWidget(config) {
                 }
             }
         }
-        const text = `欢迎阅读<span>「${document.title.split(" - ")[0]}」</span>`;
-        let from;
-        if (document.referrer !== "") {
-            const referrer = new URL(document.referrer),
-                domain = referrer.hostname.split(".")[1];
-            const domains = {
-                "baidu": "百度",
-                "so": "360搜索",
-                "google": "谷歌搜索"
-            };
-            if (location.hostname === referrer.hostname) return text;
-
-            if (domain in domains) from = domains[domain];
-            else from = referrer.hostname;
-            return `Hello！来自 <span>${from}</span> 的朋友<br>${text}`;
-        }
-        return text;
+        const messageArray = result.message.default
+        return messageArray;
     }
 
     //3.注册用户监听
@@ -93,7 +78,8 @@ function loadWidget(config) {
                 }, 20000);
             }
         }, 1000);
-        showMessage(welcomeMessage(result.time), 7000, 11);
+        //发送首次进入的消息
+        showMessage(welcomeMessage(result), 7000, 11);
         //添加界面事件鼠标移动事件监听器
         window.addEventListener("mouseover", event => {
             //遍历事件包含的元素选择器
@@ -115,7 +101,7 @@ function loadWidget(config) {
                 if (!event.target.closest(selector)) continue;
                 console.log(selector)
                 //如果等于消息框,弹出聊天框
-                if(selector == '#waifu-tips'){
+                if(selector == '#waifu-tips'||selector == '#live2d'){
                     const chatWin = document.getElementById("chatWin")
                     if(chatWin)
                       chatWin.setAttribute("isshow",true);
@@ -126,6 +112,7 @@ function loadWidget(config) {
                 return;
             }
         });
+        //日期检测(节日祝福)
         result.seasons.forEach(({ date, text }) => {
             const now = new Date(),
                 after = date.split("-")[0],
@@ -137,14 +124,17 @@ function loadWidget(config) {
             }
         });
 
-        const devtools = () => { };
-        console.log("%c", devtools);
+        // const devtools = () => { };
+        // console.log("%c", devtools);
+        //控制台监听器
         devtools.toString = () => {
             showMessage(result.message.console, 6000, 9);
         };
+        //复制事件监听器
         window.addEventListener("copy", () => {
             showMessage(result.message.copy, 6000, 9);
         });
+        //页面变化监听器
         window.addEventListener("visibilitychange", () => {
             if (!document.hidden) showMessage(result.message.visibilitychange, 6000, 9);
         });
