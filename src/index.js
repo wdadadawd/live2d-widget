@@ -149,6 +149,7 @@ function loadWidget(config) {
             modelTexturesId = 53; // 材质 ID
         }
         if (modelTargetId == null){
+            console.log('123')
             modelTargetId = 0;     //指定第一个皮肤
         }
         //加载模型
