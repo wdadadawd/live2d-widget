@@ -72,6 +72,14 @@ class Model {
             localStorage.setItem('modelTarget',target);
             loadlive2d("live2d", `${this.cdnPath}model/${target}/index.json`);
             showMessage("我的新衣服好看嘛?", 4000, 10);
+        } else {
+            // 可选 "rand"(随机), "switch"(顺序)
+            fetch(`${this.apiPath}rand_textures/?id=${modelId}-${modelTexturesId}`)
+                .then(response => response.json())
+                .then(result => {
+                    if (result.textures.id === 1 && (modelTexturesId === 1 || modelTexturesId === 0)) showMessage("我还没有其他衣服呢！", 4000, 10);
+                    else this.loadModel(modelId, result.textures.id, "我的新衣服好看嘛？");
+                });
         }
     }
 
@@ -83,6 +91,12 @@ class Model {
             const index = (++modelId >= this.modelList.models.length) ? 0 : modelId;
             //获取其他模型加载,默认第一套皮肤
             this.loadModel(index, 0,0, this.modelList.messages[index]);
+        } else {
+            fetch(`${this.apiPath}switch/?id=${modelId}`)
+                .then(response => response.json())
+                .then(result => {
+                    this.loadModel(result.model.id, 0, result.model.message);
+                });
         }
     }
 }
