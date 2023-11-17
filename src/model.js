@@ -29,16 +29,18 @@ class Model {
     }
 
     //加载模型
-    async loadModel(modelId, modelTexturesId, message) {
+    async loadModel(modelId, modelTargetId,modelTexturesId, message) {
         localStorage.setItem("modelId", modelId);
         localStorage.setItem("modelTexturesId", modelTexturesId);
+        localStorage.setItem("modelTargetId",modelTargetId);
         showMessage(message, 4000, 10);
         if (this.useCDN) {               //如果使用cdn
             if (!this.modelList) await this.loadModelList();
             //随机获取一个模型id信息
-            const target = randomSelection(this.modelList.models[modelId]);
-            console.log(target)              //打印模型信息
-            localStorage.setItem("modelTarget",target);
+            // const target = randomSelection(this.modelList.models[modelId]);
+            // const index = (++modelTargetId >= this.modelList.models.length) ? 0 : modelId;
+            const target = this.modelList.models[modelTargetId];
+            localStorage.setItem("modelTarget",target);     //设置皮肤target
             loadlive2d("live2d", `${this.cdnPath}model/${target}/index.json`);
         } else {
             loadlive2d("live2d", `${this.apiPath}get/?id=${modelId}-${modelTexturesId}`);
@@ -49,20 +51,25 @@ class Model {
     //换装
     async loadRandModel() {
         const modelId = localStorage.getItem("modelId"),
+            modelTargetId = localStorage.getItem("modelTargetId");
             modelTexturesId = localStorage.getItem("modelTexturesId");
         if (this.useCDN) {
             //如果模型列表未获取值则获取模型
             if (!this.modelList) await this.loadModelList();
-
-            let modelArray = [...this.modelList.models[modelId]];
+            
+            var index;         //皮肤id
+            let modelArray = this.modelList.models[modelId];
             if(modelArray.length > 1){   //不止一条衣服(去掉当前衣服)
-                var nowTarget = localStorage.getItem("modelTarget");
-                modelArray = modelArray.filter(item => item !== nowTarget);
+                //获取下一个皮肤索引
+                index = (++modelTargetId >= this.modelList.models.length) ? 0 : modelId;
+            }else{
                 showMessage("没有新衣服啦!", 4000, 10);
+                index = 0;
             }
             console.log(modelArray)
-            const target = randomSelection(modelArray);
-            console.log(target)              //打印模型信息
+            const target = modelArray[index];
+            localStorage.setItem('modelTargetId',index);
+            localStorage.setItem('modelTarget',target);
             loadlive2d("live2d", `${this.cdnPath}model/${target}/index.json`);
             showMessage("我的新衣服好看嘛?", 4000, 10);
         } else {
@@ -82,8 +89,8 @@ class Model {
         if (this.useCDN) {
             if (!this.modelList) await this.loadModelList();
             const index = (++modelId >= this.modelList.models.length) ? 0 : modelId;
-            //获取其他模型加载
-            this.loadModel(index, 0, this.modelList.messages[index]);
+            //获取其他模型加载,默认第一套皮肤
+            this.loadModel(index, 0,0, this.modelList.messages[index]);
         } else {
             fetch(`${this.apiPath}switch/?id=${modelId}`)
                 .then(response => response.json())

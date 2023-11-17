@@ -141,14 +141,16 @@ function loadWidget(config) {
     (function initModel() {
         //获取本地模型信息
         let modelId = localStorage.getItem("modelId"),
+            modelTargetId = localStorage.getItem("modelTargetId")
             modelTexturesId = localStorage.getItem("modelTexturesId");
         if (modelId === null) {
             // 首次访问加载 指定模型 的 指定材质
-            modelId = 1; // 模型 ID
+            modelId = 0; // 模型 ID
+            modelTargetId = 0;     //指定第一个皮肤
             modelTexturesId = 53; // 材质 ID
         }
         //加载模型
-        model.loadModel(modelId, modelTexturesId);
+        model.loadModel(modelId,modelTargetId,modelTexturesId);
         fetch(config.waifuPath)
             .then(response => response.json())
             .then(registerEventListener);               //创建监听
