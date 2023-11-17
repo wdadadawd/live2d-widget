@@ -39,7 +39,7 @@ class Model {
             //随机获取一个模型id信息
             // const target = randomSelection(this.modelList.models[modelId]);
             // const index = (++modelTargetId >= this.modelList.models.length) ? 0 : modelId;
-            const target = this.modelList.models[modelTargetId];
+            const target = this.modelList.models[modelId][modelTargetId];
             localStorage.setItem("modelTarget",target);     //设置皮肤target
             loadlive2d("live2d", `${this.cdnPath}model/${target}/index.json`);
         } else {
