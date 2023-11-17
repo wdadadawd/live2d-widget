@@ -57,18 +57,17 @@ class Model {
             //如果模型列表未获取值则获取模型
             if (!this.modelList) await this.loadModelList();
             
-            var index;         //皮肤id
             let modelArray = this.modelList.models[modelId];
-            if(modelArray.length > 1){   //不止一条衣服(去掉当前衣服)
+            if(modelArray.length > 1 && modelTargetId <= modelArray.length){   //不止一条衣服
                 //获取下一个皮肤索引
-                index = (++modelTargetId >= this.modelList.models.length) ? 0 : modelId;
+                modelTargetId++;
             }else{
                 showMessage("没有新衣服啦!", 4000, 10);
-                index = 0;
+                modelTargetId = 0;
             }
             console.log(modelArray)
-            const target = modelArray[index];
-            localStorage.setItem("modelTargetId",index);
+            const target = modelArray[modelTargetId];
+            localStorage.setItem("modelTargetId",modelTargetId);
             localStorage.setItem("modelTarget",target);
             loadlive2d("live2d", `${this.cdnPath}model/${target}/index.json`);
             showMessage("我的新衣服好看嘛?", 4000, 10);
