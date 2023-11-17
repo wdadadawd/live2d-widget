@@ -145,9 +145,11 @@ function loadWidget(config) {
             modelTexturesId = localStorage.getItem("modelTexturesId");
         if (modelId === null) {
             // 首次访问加载 指定模型 的 指定材质
-            modelId = 0; // 模型 ID
-            modelTargetId = 0;     //指定第一个皮肤
+            modelId = 0; // 模型 ID 
             modelTexturesId = 53; // 材质 ID
+        }
+        if (modelTargetId == null){
+            modelTargetId = 0;     //指定第一个皮肤
         }
         //加载模型
         model.loadModel(modelId,modelTargetId,modelTexturesId);
