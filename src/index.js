@@ -149,7 +149,7 @@ function loadWidget(config) {
             modelTexturesId = 53; // 材质 ID
         }
         console.log('123')
-        if (modelTargetId == null){
+        if (modelTargetId === null){
             console.log('123')
             modelTargetId = 0;     //指定第一个皮肤
         }
