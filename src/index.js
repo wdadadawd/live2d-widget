@@ -153,6 +153,9 @@ function loadWidget(config) {
             console.log('123')
             modelTargetId = 0;     //指定第一个皮肤
         }
+        console.log(modelTargetId)
+        console.log(modelTargetId === null)
+        console.log(modelTargetId === 'null')
         //加载模型
         model.loadModel(modelId,modelTargetId,modelTexturesId);
         fetch(config.waifuPath)
