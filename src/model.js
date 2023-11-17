@@ -51,8 +51,8 @@ class Model {
     //换装
     async loadRandModel() {
         const modelId = localStorage.getItem("modelId"),
-            modelTargetId = localStorage.getItem("modelTargetId"),
             modelTexturesId = localStorage.getItem("modelTexturesId");
+        var modelTargetId = localStorage.getItem("modelTargetId");
         if (this.useCDN) {
             //如果模型列表未获取值则获取模型
             if (!this.modelList) await this.loadModelList();
