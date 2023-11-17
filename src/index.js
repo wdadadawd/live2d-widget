@@ -94,7 +94,7 @@ function loadWidget(config) {
             }
         }, 1000);
         showMessage(welcomeMessage(result.time), 7000, 11);
-        //添加界面事件监听器
+        //添加界面事件鼠标移动事件监听器
         window.addEventListener("mouseover", event => {
             //遍历事件包含的元素选择器
             for (let { selector, text } of result.mouseover) {
@@ -109,9 +109,17 @@ function loadWidget(config) {
                 return;
             }
         });
+        //添加界面点击事件监听器
         window.addEventListener("click", event => {
             for (let { selector, text } of result.click) {
                 if (!event.target.closest(selector)) continue;
+                console.log(selector)
+                //如果等于消息框,弹出聊天框
+                if(selector == '#waifu-tips'){
+                    const chatWin = document.getElementById("chatWin")
+                    if(chatWin)
+                      chatWin.setAttribute("isshow",true);
+                }
                 text = randomSelection(text);
                 text = text.replace("{text}", event.target.innerText);
                 showMessage(text, 4000, 8);
