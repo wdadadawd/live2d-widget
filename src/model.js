@@ -26,8 +26,6 @@ class Model {
         const response = await fetch(`${this.cdnPath}model_list.json`);
         this.modelList = await response.json();
         console.log(this.modelList.models);     //打印模型列表
-        console.log('测试')
-        console.log('打印模型列表')
     }
 
     //加载模型
@@ -55,17 +53,18 @@ class Model {
         if (this.useCDN) {
             //如果模型列表未获取值则获取模型
             if (!this.modelList) await this.loadModelList();
-            //不止一条衣服(去掉当前衣服)
-            let modelArray = this.modelList.models[modelId];
-            if(modelArray.length > 1){
+
+            let modelArray = [...this.modelList.models[modelId]];
+            if(modelArray.length > 1){   //不止一条衣服(去掉当前衣服)
                 var nowTarget = localStorage.getItem("modelTarget");
                 modelArray = modelArray.filter(item => item !== nowTarget);
+                showMessage("没有新衣服啦!", 4000, 10);
             }
             console.log(modelArray)
             const target = randomSelection(modelArray);
             console.log(target)              //打印模型信息
             loadlive2d("live2d", `${this.cdnPath}model/${target}/index.json`);
-            showMessage("我的新衣服好看嘛？", 4000, 10);
+            showMessage("我的新衣服好看嘛?", 4000, 10);
         } else {
             // 可选 "rand"(随机), "switch"(顺序)
             fetch(`${this.apiPath}rand_textures/?id=${modelId}-${modelTexturesId}`)
