@@ -68,8 +68,8 @@ class Model {
             }
             console.log(modelArray)
             const target = modelArray[index];
-            localStorage.setItem('modelTargetId',index);
-            localStorage.setItem('modelTarget',target);
+            localStorage.setItem("modelTargetId",index);
+            localStorage.setItem("modelTarget",target);
             loadlive2d("live2d", `${this.cdnPath}model/${target}/index.json`);
             showMessage("我的新衣服好看嘛?", 4000, 10);
         } else {
