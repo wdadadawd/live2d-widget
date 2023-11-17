@@ -72,7 +72,7 @@ const tools = {
             localStorage.setItem("waifu-display", Date.now());
             showMessage("我先藏起来啦。", 2000, 11);
             document.getElementById("waifu").style.bottom = "-500px";
-            //隐藏人物和工具栏
+            //隐藏人物和工具栏,显示小部件
             setTimeout(() => {
                 document.getElementById("waifu").style.display = "none";      //隐藏人物模型
                 //显示用于显示人物的工具栏
