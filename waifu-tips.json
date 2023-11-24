@@ -3,10 +3,10 @@
 		"selector": "#live2d",
 		"text": ["嗨！欢迎来找我聊天，有什么我可以帮你的吗？","点我就可以和我聊天哦~~~","我随时都在!","你好！需要关于财税培训的信息或帮助吗？","如果有任何问题或建议，都可以告诉我哦！","很高兴见到你！有什么我可以帮你的吗？"]
 	}, {
-		"selector": "#allCourse",
+		"selector": ".allCourse",
 		"text":["点击这里可以查看全部课程哟"]
 	},{
-		"selector": "#studyCom",
+		"selector": ".studyCom",
 		"text":["点击这里前往学习社区"]
 	},{
 		"selector": "#waifu-tool-hitokoto",
